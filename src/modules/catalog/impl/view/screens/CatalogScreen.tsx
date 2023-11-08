@@ -1,8 +1,9 @@
 import { Card } from "@rneui/themed"
 import { Alert } from "react-native"
 import { TouchableNativeFeedback } from "react-native"
-import { FlatList, SafeAreaView, Text, View } from "react-native"
+import { FlatList, SafeAreaView, Text } from "react-native"
 import { StyleSheet } from "react-native"
+
 
 const CatalogItem = (prop: {
         item: {id: number, name: string}, 
