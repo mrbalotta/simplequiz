@@ -4,22 +4,23 @@ import { PlaySessionRepository } from "@quiz/play/core/interactors/PlaySessionRe
 
 export class MockPlaySessionRepository implements PlaySessionRepository {
 
+    private awards = new Awards()
     private powerups = new PowerUps(5, 4)
 
     async getPowerUps(): Promise<PowerUps> {
         return this.powerups
     }
 
-    getAwards(): Promise<Awards> {
-        throw new Error("Method not implemented.");
+    async getAwards(): Promise<Awards> {
+        return this.awards
     }
 
     async updatePowerUps(powerups: PowerUps): Promise<void> {
         this.powerups = powerups
     }
 
-    updateAwards(awards: Awards): Promise<void> {
-        throw new Error("Method not implemented.");
+    async updateAwards(awards: Awards): Promise<void> {
+        this.awards = awards
     }
 
     async decrementSkipCount(): Promise<PowerUps> {

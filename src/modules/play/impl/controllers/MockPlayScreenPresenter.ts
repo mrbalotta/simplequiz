@@ -1,24 +1,39 @@
 import { PlayScreenPresenter } from "@quiz/play/core/controllers/presenters/PlayScreenPresenter";
-import { PlayScreenState } from "@quiz/play/core/controllers/state/PlayScreenState";
+import { HintActionState } from "@quiz/play/core/controllers/state/HintActionState";
+import { PlayState } from "@quiz/play/core/controllers/state/PlayState";
+import { SkipActionState } from "@quiz/play/core/controllers/state/SkipActionState";
+import { Alternative } from "@quiz/play/core/data/Alternative";
 import { Question } from "@quiz/play/core/data/Question";
-import { GetHintUseCase } from "@quiz/play/core/interactors/GetHintUseCase";
+import { AwardingStrategy } from "@quiz/play/core/interactors/AwardingStrategy";
+import { HintStrategy } from "@quiz/play/core/interactors/HintStrategy";
 import { PlaySessionRepository } from "@quiz/play/core/interactors/PlaySessionRepository";
 import { QuestionRepository } from "@quiz/play/core/interactors/QuestionRepository";
 
 export class MockPlayScreenPresenter implements PlayScreenPresenter {
     private questionCallback: ((question: Question) => void) | null = null
     private timerCallback: ((value: number) => void) | null = null
-    private reducer: ((state: PlayScreenState) => void) | null = null
+    private hintCallback: ((state: HintActionState) => void) | null = null
+    private skipCallback: ((state: SkipActionState) => void) | null = null
+    private playCallback: ((state: PlayState) => void) | null = null
     private executing = false
 
     constructor(
         private readonly questionRepository: QuestionRepository,
         private readonly playSessionRepository: PlaySessionRepository,
-        private readonly getHintUsecase: GetHintUseCase
+        private readonly hintStrategy: HintStrategy,
+        private readonly awardingStrategy: AwardingStrategy
     ) {}
-    
-    setReducer(reducer: (state: PlayScreenState) => void): void {
-        this.reducer = reducer
+
+    setPlayStateCallback(callback: (state: PlayState) => void): void {
+        this.playCallback = callback
+    }
+
+    setHintCallback(callback: (state: HintActionState) => void): void {
+        this.hintCallback = callback
+    }
+
+    setSkipCallback(callback: (state: SkipActionState) => void): void {
+        this.skipCallback = callback
     }
 
     setQuestionCallback(callback: (question: Question) => void): void {
@@ -29,13 +44,18 @@ export class MockPlayScreenPresenter implements PlayScreenPresenter {
         this.timerCallback = callback
     }
 
+    async answer(alternative: Alternative): Promise<void> {
+        const awards = (alternative.correct)? await this.awardingStrategy.calculate(alternative) : await this.playSessionRepository.getAwards()
+        this.playCallback?.(new PlayState(awards.coins, awards.xp, !alternative.correct))
+    }
+
     async getHint(): Promise<void> {
         if(!this.executing) {
             try {
                 this.executing = true
-                this.questionCallback?.(await this.getHintUsecase.getQuestionWithHint())
+                this.questionCallback?.(await this.hintStrategy.getQuestionWithHint())
                 const powerups = await this.playSessionRepository.decrementHintCount()
-                this.reducer?.(new PlayScreenState(powerups.hintCount, powerups.skipCount))
+                this.hintCallback?.(new HintActionState(powerups.hintCount))
             } 
             catch(e) {}
             finally {
@@ -47,29 +67,36 @@ export class MockPlayScreenPresenter implements PlayScreenPresenter {
     async start(): Promise<void> {
         this.getNextQuestion()
         this.startPowerUps()
+        this.playCallback?.(new PlayState())
     }
 
     async finish(): Promise<void> {
-        this.reducer = null
+        this.hintCallback = null
+        this.skipCallback = null
         this.questionCallback = null
         this.timerCallback = null
+        this.playCallback = null
     }
 
     async getNextQuestion(): Promise<void> {
         const question = await this.questionRepository.getNext()
+        const powerups = await this.playSessionRepository.getPowerUps()
         this.questionCallback?.(question)
+        this.skipCallback?.(new SkipActionState(powerups.skipCount, question.index == question.rangeTotal))
     }
 
     private async startPowerUps() {
         const powerups = await this.playSessionRepository.getPowerUps()
-        this.reducer?.(new PlayScreenState(powerups.hintCount, powerups.skipCount, 0, 0, false))
+        this.hintCallback?.(new HintActionState(powerups.hintCount))
+        this.skipCallback?.(new SkipActionState(powerups.skipCount))
     }
 
     async skipQuestion(): Promise<void> {
         if(!this.executing) {
             this.executing = true
             const powerups = await this.playSessionRepository.decrementSkipCount()
-            this.reducer?.(new PlayScreenState(powerups.hintCount, powerups.skipCount))
+            //this.skipCallback?.(new SkipActionState(powerups.skipCount))
+            this.getNextQuestion()
             this.executing = false
         }
     }

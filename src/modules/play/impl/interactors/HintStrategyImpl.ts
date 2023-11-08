@@ -1,9 +1,9 @@
 import { Alternative } from "@quiz/play/core/data/Alternative";
 import { Question } from "@quiz/play/core/data/Question";
-import { GetHintUseCase } from "@quiz/play/core/interactors/GetHintUseCase";
+import { HintStrategy } from "@quiz/play/core/interactors/HintStrategy";
 import { QuestionRepository } from "@quiz/play/core/interactors/QuestionRepository";
 
-export class GetHintUseCaseImpl implements GetHintUseCase {
+export class HintStrategyImpl implements HintStrategy {
     
     private hintsPerQuestionCounter: Map<string, number> = new Map()
 
