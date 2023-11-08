@@ -1,5 +1,5 @@
 import * as modules from "@main/entrypoints/modules"
-import * as core from '@main/entrypoints/core'
+import * as infra from '@main/entrypoints/infra'
 
 import { DI } from '@infra/di/impl/DI';
 import { initializer } from "@infra/initialization/initializer";
@@ -19,6 +19,6 @@ function startModules() {
 
 function startInfra() {
     console.log("starting infra...")
-    initializer(DI.getInstance(), core)
+    initializer(DI.getInstance(), infra)
     console.log("infra started")
 }
