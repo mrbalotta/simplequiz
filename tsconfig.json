@@ -1,0 +1,13 @@
+{
+  "extends": "@tsconfig/react-native/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "lib": ["ESNext"],
+    "paths": {
+      "@quiz/*": ["./src/modules/*"],
+      "@infra/*": ["./src/infra/*"],
+      "@main/*": ["./src/main/*"]
+    }
+  },
+  "include": ["./test/**/*", "./src/**/*"]
+}
