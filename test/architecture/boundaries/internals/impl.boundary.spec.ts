@@ -5,7 +5,7 @@ import { DependOnFileCondition } from "tsarch"
 import { forbidDependency } from "test/utils/forbidDependency"
 
 
-describe('implementation boundary test', () => {
+describe('impl boundary test', () => {
 
     const checkRules = async (rules: DependOnFileCondition[]) => {
         for(const rule in rules) {
