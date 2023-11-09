@@ -115,10 +115,11 @@ const HintButton = (props: {disabled: boolean, count: number, onPress: () => voi
 }
 
 const SkipButton = (props: {disabled: boolean, count: number, onPress: () => void}) => {
+    const tintColor = props.disabled ? '#99a1a8' : 'white'
     return (
         <View>
             <Chip title={"SKIP"} 
-                icon={{type: "octicon", name: 'skip', color: 'white', size: 20}} 
+                icon={{type: "octicon", name: 'skip', color: tintColor, size: 20}} 
                 containerStyle={{marginRight: 8}} 
                 buttonStyle={{paddingLeft: 18, paddingRight: 18}} 
                 disabled={props.disabled || props.count <= 0}

@@ -15,7 +15,8 @@ export class MockPlayScreenPresenter implements PlayScreenPresenter {
     private hintCallback: ((state: HintActionState) => void) | null = null
     private skipCallback: ((state: SkipActionState) => void) | null = null
     private playCallback: ((state: PlayState) => void) | null = null
-    private executing = false
+    private hintExecuting = false
+    private skipExecuting = false
 
     constructor(
         private readonly questionRepository: QuestionRepository,
@@ -50,16 +51,16 @@ export class MockPlayScreenPresenter implements PlayScreenPresenter {
     }
 
     async getHint(): Promise<void> {
-        if(!this.executing) {
+        if(!this.hintExecuting) {
+            this.hintExecuting = true
             try {
-                this.executing = true
                 this.questionCallback?.(await this.hintStrategy.getQuestionWithHint())
                 const powerups = await this.playSessionRepository.decrementHintCount()
                 this.hintCallback?.(new HintActionState(powerups.hintCount))
             } 
             catch(e) {}
             finally {
-                this.executing = false
+                setTimeout(() => this.hintExecuting = false, 1000)
             }
         }
     }
@@ -92,12 +93,15 @@ export class MockPlayScreenPresenter implements PlayScreenPresenter {
     }
 
     async skipQuestion(): Promise<void> {
-        if(!this.executing) {
-            this.executing = true
-            const powerups = await this.playSessionRepository.decrementSkipCount()
-            //this.skipCallback?.(new SkipActionState(powerups.skipCount))
-            this.getNextQuestion()
-            this.executing = false
+        if(!this.skipExecuting) {
+            try {
+                this.skipExecuting = true
+                const powerups = await this.playSessionRepository.decrementSkipCount()
+                this.getNextQuestion()
+            } catch(e) {}
+            finally {
+                setTimeout(() => this.skipExecuting = false, 1000)
+            }      
         }
     }
 }
