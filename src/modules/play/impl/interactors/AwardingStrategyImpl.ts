@@ -11,7 +11,7 @@ export class AwardingStrategyImpl implements AwardingStrategy {
         const awards = await this.playSessionRepository.getAwards()
 
         if(answer.correct) {
-            const newAwards = new Awards(awards.coins + 5, awards.xp)
+            const newAwards = new Awards(awards.coins + 5, awards.xp + 1)
             await this.playSessionRepository.updateAwards(newAwards)
             return newAwards
         }

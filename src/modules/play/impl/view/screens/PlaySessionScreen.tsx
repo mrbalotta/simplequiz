@@ -64,15 +64,9 @@ export function PlaySessionScreen() {
                 <HeaderTile title="Coins" value={`${playState?.coins ?? 0}`} color="#F1DB4B" borderColor="white" textColor="black" />
                 <HeaderTile title="XP" value={`${playState?.xp ?? 0}`} color="#CDEB8B" borderColor="white" textColor="black" />
             </View>
-            <View style={{elevation: 2, padding: 0, backgroundColor: '#d7f4ee', marginLeft: 8, marginRight: 8}}>
-                <View style={{flexDirection: 'row', padding: 10, alignItems: 'center', justifyContent: 'flex-start'}}>
+            <View style={{elevation: 2, backgroundColor: '#d7f4ee', marginLeft: 8, marginRight: 8, flexDirection: 'row', padding: 10, alignItems: 'center', justifyContent: 'flex-start'}}>
                     <Text style={{backgroundColor: '#F6425F', color: 'white', width: 50, height: 50, borderRadius: 50, marginLeft: 8, marginRight: 16, textAlignVertical: 'center', textAlign: 'center', fontSize: 24, fontWeight: 'bold', borderWidth: 4, borderColor: 'white', elevation: 2}}>?</Text>
                     <Text style={{flex: 3, fontWeight: 'bold'}}>{question?.title}</Text>
-                </View>
-                <LinearProgress
-                    value={5}
-                    variant="indeterminate"
-                />
             </View>
             <FlatList data={question?.alternatives}
                 renderItem={({item}) => {

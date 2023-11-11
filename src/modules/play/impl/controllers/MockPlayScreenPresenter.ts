@@ -11,7 +11,6 @@ import { QuestionRepository } from "@quiz/play/core/interactors/QuestionReposito
 
 export class MockPlayScreenPresenter implements PlayScreenPresenter {
     private questionCallback: ((question: Question) => void) | null = null
-    private timerCallback: ((value: number) => void) | null = null
     private hintCallback: ((state: HintActionState) => void) | null = null
     private skipCallback: ((state: SkipActionState) => void) | null = null
     private playCallback: ((state: PlayState) => void) | null = null
@@ -39,10 +38,6 @@ export class MockPlayScreenPresenter implements PlayScreenPresenter {
 
     setQuestionCallback(callback: (question: Question) => void): void {
         this.questionCallback = callback
-    }
-
-    setTimerCallback(callback: (value: number) => void): void {
-        this.timerCallback = callback
     }
 
     async answer(alternative: Alternative): Promise<void> {
@@ -75,7 +70,6 @@ export class MockPlayScreenPresenter implements PlayScreenPresenter {
         this.hintCallback = null
         this.skipCallback = null
         this.questionCallback = null
-        this.timerCallback = null
         this.playCallback = null
     }
 

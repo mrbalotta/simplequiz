@@ -8,7 +8,6 @@ export interface PlayScreenPresenter {
     setHintCallback(callback: (state: HintActionState) => void): void
     setSkipCallback(callback: (state: SkipActionState) => void): void
     setQuestionCallback(callback: (question: Question) => void): void
-    setTimerCallback(callback: (value: number) => void): void
     setPlayStateCallback(callback: (state: PlayState) => void): void
     answer(alternative: Alternative): Promise<void>
     getHint(): Promise<void>
