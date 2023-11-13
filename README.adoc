@@ -1,0 +1,3 @@
+= Introdução
+
+Este projeto, cujo objetivo é demonstrar a solução de injeção de dependência criada para a disciplina de Arquitetura e Design de Software, contém o código-fonte de um jogo de quiz simples.

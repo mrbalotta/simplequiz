@@ -4,13 +4,22 @@ import { Chip } from "@rneui/base";
 import React from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
 
+
+//tag::docs[]
 export function HomeScreen() {
-    const navigation = useInject<PlayNavigation>("PlayNavigation")
+    const navigation = useInject<PlayNavigation>("PlayNavigation") // <1>
 
     return (
         <SafeAreaView style={styles.container}>
-            <Chip title="START" color={"#D80073"} titleStyle={{fontSize: 30}} style={{flex: 1}} onPress={() => navigation.navigate()}></Chip>
+            <StartButton onPress={() => navigation.navigate()} />
         </SafeAreaView>
+    )
+}
+//end::docs[]
+
+const StartButton = (props: {onPress: () => void}) => {
+    return (
+        <Chip title="START" color={"#D80073"} titleStyle={{fontSize: 30}} style={{flex: 1}} onPress={props.onPress}></Chip>
     )
 }
 
