@@ -196,3 +196,6 @@ Para executar o projeto em um emulador `Android`, os seguintes passos são neces
 * Em um CLI, executar, a partir da raiz do projeto, o comando `yarn start` e selecionar a opção "android" quando o menu aparecer no CLI.
 
 Instruções detalhadas podem ser encontradas em https://reactnative.dev/docs/environment-setup (opção React Native CLI Quickstart)
+
+[NOTE]
+Recomenda-se o uso da _IDE_ VS Code.
