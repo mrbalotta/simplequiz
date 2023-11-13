@@ -7,10 +7,10 @@ import {
 
 
 export class DI implements DIContainer, DIMapper {
-    private static instance = new DI()
-    private map: Map<string, DIFactory> = new Map()
+    protected static instance = new DI()
+    protected map: Map<string, DIFactory> = new Map()
 
-    private constructor() {}
+    protected constructor() {}
 
     static getInstance() {
         return this.instance
@@ -40,7 +40,7 @@ export class DI implements DIContainer, DIMapper {
     }
 }
 
-class DIFactory {
+export class DIFactory {
     constructor(private factory: () => any, private allowOverride: boolean) {}
 
     create(): any {
@@ -52,7 +52,7 @@ class DIFactory {
     }
 }
 
-class SingleFactory extends DIFactory {
+export class SingleFactory extends DIFactory {
     private value: any | null = null
     
     constructor(factory: () => any, allowOverride: boolean) {
@@ -60,7 +60,7 @@ class SingleFactory extends DIFactory {
     }
 
     create(): any {
-        if(this.value == null) this.value = super.create()
+        if(this.value === null) this.value = super.create()
         return this.value
     }
 }

@@ -9,7 +9,7 @@ import { HintStrategy } from "@quiz/play/core/interactors/HintStrategy";
 import { PlaySessionRepository } from "@quiz/play/core/interactors/PlaySessionRepository";
 import { QuestionRepository } from "@quiz/play/core/interactors/QuestionRepository";
 
-export class MockPlayScreenPresenter implements PlayScreenPresenter {
+export class PlayScreenPresenterImpl implements PlayScreenPresenter {
     private questionCallback: ((question: Question) => void) | null = null
     private hintCallback: ((state: HintActionState) => void) | null = null
     private skipCallback: ((state: SkipActionState) => void) | null = null

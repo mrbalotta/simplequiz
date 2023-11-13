@@ -1,5 +1,5 @@
 import { DIContainer, DIMapper } from "@infra/di/api";
-import { MockPlayScreenPresenter } from "@quiz/play/impl/controllers/MockPlayScreenPresenter";
+import { PlayScreenPresenterImpl } from "@quiz/play/impl/controllers/PlayScreenPresenterImpl";
 import { QuestionRepository } from "@quiz/play/core/interactors/QuestionRepository";
 import { PlaySessionRepository } from "@quiz/play/core/interactors/PlaySessionRepository";
 import { HintStrategy } from "@quiz/play/core/interactors/HintStrategy";
@@ -12,7 +12,7 @@ export default function main(di: DIContainer & DIMapper) {
         const hintStrategy = di.inject<HintStrategy>("HintStrategy")
         const awardingStrategy = di.inject<AwardingStrategy>("AwardingStrategy")
 
-        return new MockPlayScreenPresenter(questionRepository, playSessionRepository, hintStrategy, awardingStrategy)
+        return new PlayScreenPresenterImpl(questionRepository, playSessionRepository, hintStrategy, awardingStrategy)
     }
     
     di.single("PlayScreenPresenter", factory)

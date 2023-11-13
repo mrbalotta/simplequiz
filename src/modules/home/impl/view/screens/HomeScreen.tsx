@@ -1,48 +1,25 @@
-import { Card } from "@rneui/base";
-import { ScrollView } from "react-native";
-import { TouchableNativeFeedback } from "react-native";
-import { Alert } from "react-native";
-import { SafeAreaView, StyleSheet, Text } from "react-native";
+import { useInject } from "@infra/di/view";
+import { PlayNavigation } from "@quiz/play/api/PlayNavigation";
+import { Chip } from "@rneui/base";
+import React from "react";
+import { SafeAreaView, StyleSheet } from "react-native";
 
 export function HomeScreen() {
-    const onPressButton = () => {
-        Alert.alert('You tapped the button!');
-    }
+    const navigation = useInject<PlayNavigation>("PlayNavigation")
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView contentContainerStyle={styles.content}>
-                    <Card containerStyle={styles.card} wrapperStyle={styles.cardContent}>
-                        <TouchableNativeFeedback onPress={onPressButton}>
-                            <Text style={styles.cardTitle}>Challenge Mode</Text>
-                        </TouchableNativeFeedback>
-                    </Card>
-                
-                    <Card containerStyle={styles.card} wrapperStyle={styles.cardContent}>
-                        <TouchableNativeFeedback onPress={onPressButton}>
-                            <Text style={styles.cardTitle}>Campaign Mode</Text>
-                        </TouchableNativeFeedback>
-                    </Card> 
-
-                    <Card containerStyle={styles.card} wrapperStyle={styles.cardContent}>
-                        <TouchableNativeFeedback onPress={onPressButton}>
-                            <Text style={[styles.cardTitle]}>Achievements</Text>
-                        </TouchableNativeFeedback>
-                    </Card> 
-
-                    <Card containerStyle={styles.card} wrapperStyle={styles.cardContent}>
-                        <TouchableNativeFeedback onPress={onPressButton}>
-                            <Text style={[styles.cardTitle]}>Help</Text>
-                        </TouchableNativeFeedback>
-                    </Card> 
-            </ScrollView>
+            <Chip title="START" color={"#D80073"} titleStyle={{fontSize: 30}} style={{flex: 1}} onPress={() => navigation.navigate()}></Chip>
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-
+        justifyContent: 'center',
+        alignContent: 'center',
+        flex: 1,
+        padding: 16
     },
     content: {
         justifyContent: 'center',

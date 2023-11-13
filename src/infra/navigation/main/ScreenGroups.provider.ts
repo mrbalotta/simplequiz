@@ -5,7 +5,7 @@ import { ScreenGroupsRepository } from "@infra/navigation/api/mapper/ScreenGroup
 export default function main(di: DIContainer & DIMapper) {
     const factory = () => {
         return new ScreenGroups()
-                .setGroupInitialRoute("default", "quiz/play/session")
+                .setGroupInitialRoute("default", "quiz/home")
     }
 
     di.single("NavigationMapper", factory)

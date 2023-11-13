@@ -1,11 +1,13 @@
 import { useInject } from "@infra/di/view";
+import { HomeNavigation } from "@quiz/home/api/HomeNavigation";
 import { PlayScreenPresenter } from "@quiz/play/core/controllers/presenters/PlayScreenPresenter";
 import { HintActionState } from "@quiz/play/core/controllers/state/HintActionState";
 import { PlayState } from "@quiz/play/core/controllers/state/PlayState";
 import { SkipActionState } from "@quiz/play/core/controllers/state/SkipActionState";
 import { Alternative } from "@quiz/play/core/data/Alternative";
 import { Question } from "@quiz/play/core/data/Question";
-import { Badge, Chip, LinearProgress } from "@rneui/themed";
+import { Badge, Chip } from "@rneui/themed";
+import React from "react";
 import { useState, useEffect, useCallback } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,6 +15,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export function PlaySessionScreen() {
     const presenter = useInject<PlayScreenPresenter>("PlayScreenPresenter")
+    const navigation = useInject<HomeNavigation>("HomeNavigation")
     const [question, setCurrentQuestion] = useState<Question>()
     const [answered, setAnswer] = useState('')
     const [hintState, setHintState] = useState<HintActionState>()
@@ -20,7 +23,6 @@ export function PlaySessionScreen() {
     const [playState, setPlayState] = useState<PlayState>()
 
     const updatePlayState = useCallback((state: PlayState) => {
-        console.log(JSON.stringify(state))
         setPlayState(state)
     }, [])
 
@@ -75,7 +77,7 @@ export function PlaySessionScreen() {
                 keyExtractor={(item) => item.id}
             />
             <View style={[styles.headerFooter, {justifyContent: 'space-around'}]}>
-                <Chip type="outline" title={"EXIT"} icon={{type: "ionicon", name: 'exit-outline', color: '#218adc', size: 20}} containerStyle={{marginLeft: 8}} />
+                <Chip type="outline" title={"EXIT"} icon={{type: "ionicon", name: 'exit-outline', color: '#218adc', size: 20}} onPress={() => navigation.navigate()} containerStyle={{marginLeft: 8}} />
                 <HintButton disabled={answered !== '' || (hintState?.disabled ?? false)} count={hintState?.count ?? 0} onPress={async () => await presenter.getHint()} />
                 <ActionFactory answered={answered !== ''} disabled={playState?.disabled || (skipState?.disabled ?? false)} skipCount={skipState?.count ?? 0} />
             </View>
